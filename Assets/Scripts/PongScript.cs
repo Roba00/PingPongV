@@ -22,10 +22,14 @@ public class PongScript : MonoBehaviour
         {
             gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector3(Random.Range(-200, 200), 250, 0));
         }
-        if (other.gameObject.name == "Floor")
+        if (other.gameObject.tag == "Floor")
         {
             Debug.Log("You Dead");
-            SceneManager.LoadScene(0);
+            //SceneManager.LoadScene(0);
+        }
+        if (other.gameObject.tag == "Player")
+        {
+            gameObject.GetComponent<Rigidbody2D>().gravityScale = -gameObject.GetComponent<Rigidbody2D>().gravityScale;
         }
     }
 }
