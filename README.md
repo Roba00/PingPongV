@@ -1,4 +1,4 @@
-#Ping Pong V
+# Ping Pong V #
 
 If you want you want to play the game:
 1) Download one of the zip files in the Builds folder as a raw file. If your on Windows, choose that. If not, choose the WebGL Build.
