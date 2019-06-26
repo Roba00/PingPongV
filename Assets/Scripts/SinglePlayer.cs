@@ -10,9 +10,14 @@ public class SinglePlayer : MonoBehaviour
     public Transform myPosition;
     public Rigidbody2D myPhysics;
     public BoxCollider2D myBoundaries;
+    public GameObject pong;
     public Transform pongPosition;
     public Rigidbody2D pongPhysics;
     public BoxCollider2D pongBoundaries;
+    
+    public ParticleSystem particles;
+    public AudioSource musicSource;
+    public AudioSource sfxSource;
 
     public BoxCollider2D floorBoundaries;
 
@@ -45,7 +50,7 @@ public class SinglePlayer : MonoBehaviour
     void Update()
     {
         setScore(scoreNumber);
-        if (scoreNumber / 5.0f == 1.0f && scoreNumber!=checkNumber) //If score number is an addend of 10
+        if (scoreNumber % 5.0f == 0 && scoreNumber!=checkNumber) //If score number is an multiple of 5
         {
             RandomChallenge(scoreNumber);
             checkNumber = scoreNumber;
@@ -81,7 +86,7 @@ public class SinglePlayer : MonoBehaviour
     {
         if (other.gameObject.name == "Pong")
         {
-            Throw();
+            pong.GetComponent<PongSingle>().Throw();
             if (isGrounded)
             {
                 addScore(1);
@@ -116,15 +121,15 @@ public class SinglePlayer : MonoBehaviour
         physicsObject.AddForce(Vector2.zero);
     }
     
-    private void Throw()
+    /* private void Throw()
     {
         pongPhysics.AddForce(new Vector3(Random.Range(-200, 200), 250, 0));
-    }
+    }*/
 
     void RandomChallenge(int scoreNumber)
     {
         double difficulty = Mathf.Sqrt(scoreNumber) / 2;
-        PlayerSlowDown();
+        SpeedUpScene();
         switch (difficulty)
         {
             case 1:
@@ -150,12 +155,17 @@ public class SinglePlayer : MonoBehaviour
 
     void SpeedUpScene()
     {
-
+        playerSpeed *= 2;
+        pong.GetComponent<PongSingle>().pongSpeed *= 2;
+        pong.GetComponent<PongSingle>().offsetJumpForce = pong.GetComponent<PongSingle>().jumpForce;
+        pong.GetComponent<PongSingle>().jumpForce *= 1.5f;
     }
 
     void ReverseSpeedUpScene()
     {
-
+        playerSpeed *= 0.5f;
+        pong.GetComponent<PongSingle>().pongSpeed *= 0.5f;
+        pong.GetComponent<PongSingle>().jumpForce *= 0.67f;
     }
 
     void JumpLower()
@@ -165,6 +175,7 @@ public class SinglePlayer : MonoBehaviour
     }
     void ReverseJumpLower()
     {
-        
+        jumpForce *= 3/2;
+        Debug.Log("JumpLow!");
     }
 }
